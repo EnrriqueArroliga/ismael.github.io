@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Managua 1972</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1c1a19;--deep:#121110;--fg:#f2ede6;--ac:#d9482b;--ocre:#e0a458;--sage:#b9afa3;--line:#b9afa344;--ink:#fff8ed;color-scheme:dark;--font:'DM Sans',ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#f2ede6;--deep:#e2dad0;--fg:#1c1a19;--ac:#b8321a;--ocre:#8a5a14;--sage:#5e554c;--line:#1c1a1944;--ink:#fff8ed;color-scheme:light}}
+:root[data-theme="dark"]{--bg:#1c1a19;--deep:#121110;--fg:#f2ede6;--ac:#d9482b;--ocre:#e0a458;--sage:#b9afa3;--line:#b9afa344;--ink:#fff8ed}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{font-family:var(--font);background:var(--bg);color:var(--fg);font-size:17px;line-height:1.4;letter-spacing:.02em;-webkit-font-smoothing:antialiased}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--bg);border-bottom:1px solid var(--line);padding:14px 5%;text-align:center}
+#pr{position:absolute;left:0;bottom:-1px;height:3px;width:0;background:var(--ac)}
+.logo{font-size:24px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;margin-bottom:8px}
+nav{display:flex;gap:4px;justify-content:center;flex-wrap:wrap}
+nav button{background:none;border:1px solid transparent;color:var(--fg);font:500 14px var(--font);letter-spacing:.04em;text-transform:uppercase;padding:6px 9px;cursor:pointer}
+nav button.on{border-color:var(--fg)}
+.btn{display:inline-block;background:var(--ac);color:var(--ink);border:0;padding:12px 16px;font:600 15px var(--font);letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
+.btn:hover{opacity:.85}
+.pg{display:none;padding:40px 5% 70px;max-width:980px;margin:0 auto}
+.pg.on{display:block;animation:in .4s ease}
+.pg.hero:not(.on){display:none}
+.pg.hero.on{display:flex}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+h1{font-size:clamp(34px,8vw,64px);font-weight:500;line-height:1.05;text-transform:uppercase;letter-spacing:.03em}
+h2{font-size:26px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin:44px 0 14px}
+h2:first-child{margin-top:0}
+p.s{color:var(--sage);margin-bottom:14px}
+.hero{min-height:70vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:20px;background:radial-gradient(ellipse at 50% 100%,#d9482b33,transparent 60%),linear-gradient(var(--deep),var(--bg));max-width:none;margin:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.card{background:var(--deep);border:1px solid var(--line);padding:16px}
+.big{font-size:44px;font-weight:600;color:var(--ocre);line-height:1}
+.lbl{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--sage);margin-top:6px}
+.ba{position:relative;aspect-ratio:600/260;border:1px solid var(--line);overflow:hidden;--x:50%}
+.ba svg{position:absolute;inset:0;width:100%;height:100%}
+.ba .af{clip-path:inset(0 0 0 var(--x))}
+.ba .hd{position:absolute;top:0;bottom:0;left:var(--x);width:2px;background:var(--fg)}
+.ba input{width:100%;margin-top:10px;accent-color:var(--ac)}
+.tag{position:absolute;top:8px;font-size:12px;text-transform:uppercase;background:var(--deep);padding:3px 7px}
+.tl{border-left:2px solid var(--line);margin-left:8px;padding-left:20px}
+.tl .it{padding:0 0 28px;opacity:.25;transform:translateX(10px);transition:.5s}
+.tl .it.v{opacity:1;transform:none}
+.tl b{color:var(--ac);font-weight:600}
+.bar{height:14px;background:var(--deep);border:1px solid var(--line);margin:6px 0 14px}
+.bar i{display:block;height:100%;background:var(--ac);width:0;transition:width 1.4s}
+.dm{display:grid;grid-template-columns:repeat(20,1fr);gap:3px}
+.dm i{aspect-ratio:1;background:var(--deep);transition:background .3s}
+.dm i.x{background:var(--ac)}
+#map{width:100%;border:1px solid var(--line);background:var(--deep)}
+.pin{cursor:pointer}
+.pin:hover circle{r:11}
+.info{margin-top:12px;min-height:90px}
+.pool,.bag{min-height:80px;border:1px dashed var(--line);padding:10px;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+.bag{border-color:var(--ac)}
+.item{background:var(--deep);border:1px solid var(--line);padding:8px 12px;cursor:grab;user-select:none;font-size:15px}
+.item.ok{border-color:#7ec27e}.item.no{border-color:#e55}
+.opt{display:block;width:100%;text-align:left;background:var(--deep);color:var(--fg);border:1px solid var(--line);padding:12px;margin-top:8px;font:inherit;cursor:pointer}
+.opt.ok{border-color:#7ec27e}.opt.no{border-color:#e55}
+textarea,input[type=text]{width:100%;background:var(--deep);color:var(--fg);border:1px solid var(--line);padding:10px;font:inherit;margin-bottom:8px}
+.post{border-left:3px solid var(--ac);padding:6px 12px;margin-top:12px;background:var(--deep)}
+.vid{aspect-ratio:9/16;max-height:340px;background:linear-gradient(160deg,var(--deep),#d9482b33);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;text-align:center;padding:12px;font-size:14px;color:var(--sage)}
+.pend{display:inline-block;border:1px dashed var(--ocre);color:var(--ocre);padding:1px 7px;font-size:12px;text-transform:uppercase;letter-spacing:.05em}
+details{background:var(--deep);border:1px solid var(--line);padding:12px;margin-bottom:8px}summary{cursor:pointer;font-weight:600}details p{margin-top:8px;color:var(--sage)}
+.note{font-size:13px;color:var(--sage);border-top:1px solid var(--line);margin-top:20px;padding-top:10px}
+.play{background:var(--ac);color:var(--ink);border:0;border-radius:50%;width:38px;height:38px;font-size:15px;cursor:pointer;flex:none}
+.row{display:flex;gap:12px;align-items:center}
+</style>
+</head>
+<body>
+<header><div id="pr"></div><div class="logo" data-p="inicio">Managua 1972</div>
+<nav><button data-p="inicio">Inicio</button><button data-p="historia">Historia</button><button data-p="mapa">Mapa</button><button data-p="medios">Medios</button><button data-p="prevencion">Prevención</button><button data-p="comunidad">Comunidad</button><button data-p="recursos">Recursos</button></nav></header>
+
+<section class="pg hero" id="inicio"><p class="lbl">Madrugada del 23 de diciembre de 1972</p><h1>La ciudad que<br>se quebró</h1><p class="s" style="max-width:520px">Una experiencia interactiva para entender el terremoto de Managua, recordar a quienes lo vivieron y aprender a protegernos hoy.</p><button class="btn" data-p="historia">Comenzar</button></section>
+
+<section class="pg" id="historia">
+<h2>Los números</h2>
+<div class="grid">
+<div class="card"><div class="big cnt" data-to="6.2" data-d="1">0</div><div class="lbl">Magnitud Richter</div></div>
+<div class="card"><div class="big"><span class="cnt" data-to="10000">0</span>–<span class="cnt" data-to="20000">0</span></div><div class="lbl">Fallecidos (estimado)</div></div>
+<div class="card"><div class="big cnt" data-to="280000">0</div><div class="lbl">Damnificados</div><div class="lbl" style="text-transform:none">Personas que perdieron su hogar o sus bienes</div></div>
+<div class="card"><div class="big"><span class="cnt" data-to="90">0</span>%</div><div class="lbl">Del centro destruido</div></div>
+</div>
+<h2>Impacto humano</h2>
+<p class="s">Escala: 280,000 damnificados.</p>
+<div>Fallecidos (hasta 20,000)</div><div class="bar"><i data-w="7"></i></div>
+<div>Damnificados (280,000)</div><div class="bar"><i data-w="100"></i></div>
+<h2>Daño estructural del centro</h2>
+<div class="dm" id="dm"></div><p class="lbl">Cada cuadro = 1% del centro. Naranja = destruido.</p>
+<h2>Antes y después</h2>
+<p class="s">Desliza para comparar. Ilustración esquemática: reemplázala por fotos reales de archivo.</p>
+<div class="ba" id="ba"><div id="b1"></div><div class="af" id="b2"></div><span class="tag" style="left:8px">Antes</span><span class="tag" style="right:8px">Después</span><div class="hd"></div></div>
+<input type="range" min="0" max="100" value="50" id="rg" style="width:100%;accent-color:var(--ac);margin-top:10px" aria-label="Comparar antes y después">
+<h2>Cronología</h2>
+<div class="tl" id="tl"></div>
+<h2>Después</h2><div class="card"><p class="s">Gran parte del centro quedó destruido y la ciudad creció en otras direcciones.</p><p class="s">Qué se reconstruyó y cómo se ve hoy esa zona: <span class="pend">Pendiente</span></p><p class="s">Fotos actuales del antiguo centro: <span class="pend">Pendiente</span></p></div>
+<p class="note">Cifras de fallecidos y damnificados: aproximadas y variables según la fuente. Verifícalas antes de publicar.</p>
+</section>
+
+<section class="pg" id="mapa">
+<h2>Mapa de fallas</h2>
+<p class="s">Toca un punto. Esquema ilustrativo, no a escala: las posiciones son aproximadas.</p>
+<svg id="map" viewBox="0 0 600 340"><rect width="600" height="340" fill="none"/>
+<ellipse cx="400" cy="120" rx="60" ry="30" fill="#4a90b844" stroke="#4a90b8"/><text x="400" y="124" fill="currentColor" font-size="11" text-anchor="middle">Laguna de Tiscapa</text>
+<path d="M40 60 C180 110 260 200 330 170 S480 260 570 300" fill="none" stroke="#e0a458" stroke-width="4" stroke-dasharray="10 6"/>
+<text x="60" y="48" fill="#e0a458" font-size="12">Falla de Tiscapa (esquema)</text><g id="pins"></g></svg>
+<div class="card info" id="info"><b>Selecciona un punto</b><br>Aquí verás qué pasó en cada zona.</div>
+<p class="note">Los textos del mapa son generales. Contrástalos con INETER u otra fuente científica antes de afirmarlos como hechos.</p>
+</section>
+
+<section class="pg" id="medios">
+<h2>Cápsulas de audio</h2>
+<div id="aud"></div>
+<h2>Videos verticales</h2>
+<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr))"><div class="vid">Clip 1<br>¿Qué pasó esa noche?</div><div class="vid">Clip 2<br>Qué es una falla</div><div class="vid">Clip 3<br>Qué hacer hoy</div></div>
+<h2>Archivo de prensa</h2>
+<div id="prs"></div>
+<p class="note">Espacios reservados: aún no hay audios, videos ni recortes reales. Agrégalos con permiso de sus autores.</p>
+</section>
+
+<section class="pg" id="prevencion">
+<h2>Mochila de emergencia</h2>
+<p class="s">Arrastra (o toca) lo necesario a la mochila.</p>
+<div class="pool" id="pool"></div><b>Mi mochila</b><div class="bag" id="bag"></div>
+<button class="btn" id="chk">Revisar</button> <span id="res"></span>
+<h2>Zonas seguras</h2>
+<div class="grid">
+<div class="card"><b>Dentro</b><p class="s">Agáchate, cúbrete y sujétate junto a una mesa fuerte. Aléjate de ventanas. No uses ascensores.</p></div>
+<div class="card"><b>Afuera</b><p class="s">Busca un espacio abierto lejos de cables, postes y fachadas.</p></div>
+<div class="card"><b>Después</b><p class="s">Sal con calma por tu ruta de evacuación y ve al punto de encuentro.</p></div></div>
+<h2>Plan familiar</h2><p class="s">Llénalo con tu familia. Se guarda solo en este navegador.</p><input type="text" class="pl" id="plA" placeholder="Punto de encuentro"><input type="text" class="pl" id="plB" placeholder="Contacto de emergencia"><input type="text" class="pl" id="plC" placeholder="Ruta de salida de la casa">
+<h2>Managua hoy</h2><div class="card"><p class="s">Nicaragua tiene actividad sísmica y volcánica frecuente. Para información oficial consulta <a href="https://www.ineter.gob.ni" target="_blank" rel="noopener" style="color:var(--ocre)">INETER</a>.</p><p class="s">Mapa de riesgo de tu barrio: <span class="pend">Pendiente</span></p><p class="s">Números de emergencia locales: <span class="pend">Pendiente</span></p></div>
+<h2>Contra la desinformación</h2>
+<div class="card"><p class="s">• Comparte solo fuentes oficiales.<br>• Verifica la fecha y el origen de las fotos.<br>• No difundas rumores de réplicas «exactas».<br>• Usa mensajes cortos para no saturar las redes.</p></div>
+</section>
+
+<section class="pg" id="comunidad">
+<h2>Muro de historias</h2>
+<p class="s">Escribe lo que te contaron tus padres o abuelos.</p>
+<input type="text" id="nm" placeholder="Tu nombre (opcional)"><textarea id="tx" rows="3" placeholder="Su historia..."></textarea>
+<button class="btn" id="pb">Publicar</button><div id="wall"></div>
+<p class="note">El muro guarda en tu navegador. Para un muro compartido hace falta una base de datos.</p>
+<h2>Quiz de supervivencia</h2>
+<div class="card" id="qz"></div>
+</section>
+
+<section class="pg" id="recursos">
+<h2>Glosario</h2>
+<details><summary>Sismo o terremoto</summary><p>Vibración del suelo causada por la liberación repentina de energía en la corteza terrestre.</p></details>
+<details><summary>Magnitud (escala Richter)</summary><p>Medida de la energía liberada por un sismo. Cada punto más equivale a una energía mucho mayor.</p></details>
+<details><summary>Falla</summary><p>Fractura de la corteza terrestre donde las rocas pueden desplazarse y generar sismos.</p></details>
+<details><summary>Epicentro</summary><p>Punto de la superficie justo encima de donde se origina el sismo.</p></details>
+<details><summary>Réplica</summary><p>Sismo más pequeño que ocurre después del principal, en la misma zona.</p></details>
+<details><summary>Damnificado</summary><p>Persona que sufrió daños directos por un desastre y perdió su hogar o sus bienes.</p></details>
+<details><summary>Evacuación</summary><p>Salida ordenada de un lugar peligroso hacia una zona segura.</p></details>
+<h2>Fuentes y créditos</h2>
+<div class="card"><p class="s">INETER (Instituto Nicaragüense de Estudios Territoriales): información sísmica oficial.</p><p class="s">Fuente de las cifras (magnitud, fallecidos, damnificados): <span class="pend">Pendiente</span></p><p class="s">Créditos de fotos y archivo: <span class="pend">Pendiente</span></p><p class="s">Autores y fecha del proyecto: <span class="pend">Pendiente</span></p></div>
+</section>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+function go(p){if(!$('#'+p))p='inicio';$$('.pg').forEach(e=>e.classList.toggle('on',e.id==p));$$('nav button').forEach(b=>b.classList.toggle('on',b.dataset.p==p));window.scrollTo(0,0);if(p=='historia')start()}
+$$('[data-p]').forEach(b=>b.onclick=()=>{go(b.dataset.p);try{location.hash=b.dataset.p}catch(e){}});
+addEventListener('hashchange',()=>go(location.hash.slice(1)));
+const H=[120,90,150,110,170,100,130,95,160,105,140,85];
+function city(r){let s='<svg viewBox="0 0 600 260" preserveAspectRatio="none"><rect width="600" height="260" fill="'+(r?'#5a524b':'#d9b382')+'"/>';
+H.forEach((h,i)=>{const x=i*48+12,w=38,y=230;
+if(r){const k=[.3,.15,.35,.1][i%4];s+=`<polygon points="${x},${y} ${x},${y-h*k} ${x+10},${y-h*.12} ${x+20},${y-h*k*1.4} ${x+w},${y-h*.08} ${x+w},${y}" fill="#2e2824"/>`}
+else s+=`<rect x="${x}" y="${y-h}" width="${w}" height="${h}" fill="#8a7d70"/><rect x="${x+8}" y="${y-h+10}" width="6" height="8" fill="#ffd98a"/><rect x="${x+22}" y="${y-h+10}" width="6" height="8" fill="#ffd98a"/>`});
+return s+'<rect y="230" width="600" height="30" fill="'+(r?'#1c1a19':'#3a332d')+'"/></svg>'}
+$('#b1').innerHTML=city(0);$('#b2').innerHTML=city(1);
+$('#rg').oninput=e=>$('#ba').style.setProperty('--x',e.target.value+'%');
+$('#dm').innerHTML=Array.from({length:100},(_,i)=>'<i data-i="'+i+'"></i>').join('');
+const TL=[['Antes','Managua en 1972: un centro urbano activo y densamente poblado.'],['Madrugada del 23','Poco después de la medianoche, un sismo de magnitud 6.2 sacude la ciudad.'],['Primeras horas','Colapsos, incendios y miles de personas atrapadas o heridas.'],['Días siguientes','Evacuación masiva y llegada de ayuda internacional.'],['Después','Cientos de miles de damnificados; gran parte del centro no se reconstruyó donde estaba.']];
+$('#tl').innerHTML=TL.map(t=>`<div class="it"><b>${t[0]}</b><br>${t[1]}</div>`).join('');
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');io.unobserve(e.target)}}),{threshold:.4});
+let started=0;
+function start(){$$('.tl .it').forEach(e=>io.observe(e));if(started)return;started=1;
+$$('.cnt').forEach(el=>{const to=+el.dataset.to,d=+el.dataset.d||0,t0=performance.now();(function f(t){const k=Math.min(1,(t-t0)/1400);el.textContent=(to*k).toLocaleString('es-NI',{minimumFractionDigits:d,maximumFractionDigits:d});if(k<1)requestAnimationFrame(f)})(t0)});
+$$('.bar i').forEach(i=>i.style.width=i.dataset.w+'%');
+const c=$$('#dm i');c.forEach((e,i)=>setTimeout(()=>{if(i<90)e.classList.add('x')},i*15))}
+const P=[[120,70,'Catedral (centro)','Zona central: entre las más afectadas. Es un ejemplo de edificio histórico dañado.'],[270,130,'Zona sobre la falla','Aquí el esquema cruza la traza. Las estructuras sobre una falla son las más vulnerables.'],[330,170,'Barrios del centro','Densidad alta de casas y comercios; gran parte de esta zona quedó destruida.'],[470,230,'Edificio alto resistente','Se suele citar un edificio moderno que resistió mejor. Verifica el caso concreto.']];
+$('#pins').innerHTML=P.map((p,i)=>`<g class="pin" data-i="${i}"><circle cx="${p[0]}" cy="${p[1]}" r="8" fill="#d9482b" stroke="#fff"/><text x="${p[0]+12}" y="${p[1]+4}" fill="currentColor" font-size="11">${p[2]}</text></g>`).join('');
+$$('.pin').forEach(g=>g.onclick=()=>{const p=P[g.dataset.i];$('#info').innerHTML='<b>'+p[2]+'</b><br>'+p[3]});
+$('#aud').innerHTML=[1,2,3].map(n=>`<div class="card row" style="margin-bottom:8px"><button class="play" data-n="${n}">▶</button><div><b>Testimonio ${n}</b><br><span class="lbl" id="a${n}">Sin audio aún</span></div></div>`).join('');
+$$('.play').forEach(b=>b.onclick=()=>{$('#a'+b.dataset.n).textContent='Agrega aquí tu archivo de audio'});
+const PR=[['Diario de la época','Titular y recorte pendiente.'],['Radio internacional','Audio de archivo pendiente.'],['Carta oficial','Documento pendiente.']];
+$('#prs').innerHTML=PR.map((p,i)=>`<div class="card" style="margin-bottom:8px;cursor:pointer" data-i="${i}"><b>${p[0]}</b><div class="s" style="display:none">${p[1]}</div></div>`).join('');
+$$('#prs .card').forEach(c=>c.onclick=()=>{const d=c.querySelector('div');d.style.display=d.style.display=='none'?'block':'none'});
+const IT=[['Agua',1],['Linterna',1],['Radio a pilas',1],['Botiquín',1],['Copia de documentos',1],['Silbato',1],['Comida enlatada',1],['Cargador portátil',1],['Televisor',0],['Joyas',0],['Plancha',0],['Juego de mesa',0]];
+IT.sort(()=>Math.random()-.5);
+IT.forEach((t,i)=>{const e=document.createElement('div');e.className='item';e.textContent=t[0];e.draggable=true;e.dataset.ok=t[1];e.id='it'+i;
+e.ondragstart=ev=>ev.dataTransfer.setData('t',e.id);e.onclick=()=>(e.parentNode==$('#pool')?$('#bag'):$('#pool')).appendChild(e);$('#pool').appendChild(e)});
+[$('#pool'),$('#bag')].forEach(z=>{z.ondragover=e=>e.preventDefault();z.ondrop=e=>{e.preventDefault();const el=document.getElementById(e.dataTransfer.getData('t'));if(el)z.appendChild(el)}});
+$('#chk').onclick=()=>{let ok=0,bad=0;$$('.item').forEach(e=>e.classList.remove('ok','no'));$$('#bag .item').forEach(e=>{if(e.dataset.ok==1){ok++;e.classList.add('ok')}else{bad++;e.classList.add('no')}});
+const miss=$$('#pool .item').filter(e=>e.dataset.ok==1).length;$('#res').textContent=` Aciertos: ${ok} · Sobran: ${bad} · Faltan: ${miss}`};
+let W=[];try{W=JSON.parse(localStorage.getItem('w')||'[]')}catch(e){}
+function rw(){$('#wall').innerHTML='';W.forEach(w=>{const d=document.createElement('div');d.className='post';const b=document.createElement('b');b.textContent=w.n||'Anónimo';const p=document.createElement('div');p.textContent=w.t;d.append(b,p);$('#wall').prepend(d)})}
+$('#pb').onclick=()=>{const t=$('#tx').value.trim();if(!t)return;W.push({n:$('#nm').value.trim(),t});try{localStorage.setItem('w',JSON.stringify(W))}catch(e){}$('#tx').value='';rw()};rw();
+const Q=[['¿Qué haces primero durante un temblor dentro de casa?',['Correr al ascensor','Agacharte, cubrirte y sujetarte','Pararte junto a la ventana'],1],['¿Qué NO va en la mochila de emergencia?',['Linterna','Agua','Un televisor'],2],['Cuando termina el temblor, ¿qué haces?',['Salir con calma por la ruta de evacuación','Usar el ascensor','Quedarte bajo cables'],0],['En redes durante un desastre, lo mejor es…',['Compartir todo rápido','Compartir solo fuentes oficiales','Inventar cifras'],1],['¿Qué magnitud tuvo el sismo de 1972 según esta página?',['4.5','6.2','8.0'],1],['¿Qué es una réplica?',['Un sismo anterior','Un sismo más pequeño posterior al principal','Una ola gigante'],1],['¿Qué significa damnificado?',['Rescatista','Persona que viaja','Persona que perdió su hogar o bienes por un desastre'],2],['Si estás en la calle durante un temblor, ¿qué haces?',['Ir a un espacio abierto lejos de cables y fachadas','Entrar a un edificio alto','Pararte bajo un poste'],0],['Un punto de encuentro familiar sirve para…',['Guardar comida','Reunirse tras la emergencia','Evitar evacuar'],1],['¿Qué es una falla?',['Un río subterráneo','Un tipo de edificio','Una fractura de la corteza donde puede ocurrir un sismo'],2]];
+let qi=0,sc=0;
+function rq(){const z=$('#qz');if(qi>=Q.length){z.innerHTML=`<b>Resultado: ${sc}/${Q.length}</b><br>${sc>=9?'Excelente: ya sabes cómo protegerte.':sc>=6?'Bien, repasa la sección de Prevención.':'Repasa Historia y Prevención y vuelve a intentarlo.'}<br><button class="btn" style="margin-top:10px" id="rs">Repetir</button>`;$('#rs').onclick=()=>{qi=0;sc=0;rq()};return}
+const q=Q[qi];z.innerHTML=`<p class="lbl">Pregunta ${qi+1} de ${Q.length}</p><b>${q[0]}</b>`;
+q[1].forEach((o,i)=>{const b=document.createElement('button');b.className='opt';b.textContent=o;b.onclick=()=>{$$('.opt').forEach((x,j)=>{x.disabled=true;x.classList.add(j==q[2]?'ok':'no')});if(i==q[2])sc++;setTimeout(()=>{qi++;rq()},1100)};z.appendChild(b)})}
+const O=['inicio','historia','mapa','medios','prevencion','comunidad','recursos'],NM=['Inicio','Historia','Mapa','Medios','Prevención','Comunidad','Recursos'];
+O.slice(0,-1).forEach((p,i)=>{if(p=='inicio')return;const b=document.createElement('button');b.className='btn';b.style.marginTop='36px';b.textContent='Siguiente: '+NM[i+1]+' →';b.onclick=()=>{go(O[i+1]);try{location.hash=O[i+1]}catch(e){}};$('#'+p).appendChild(b)});
+addEventListener('scroll',()=>{const h=document.documentElement;$('#pr').style.width=(h.scrollTop/((h.scrollHeight-h.clientHeight)||1)*100)+'%'});
+$$('.pl').forEach(i=>{try{i.value=localStorage.getItem('p'+i.id)||''}catch(e){}i.oninput=()=>{try{localStorage.setItem('p'+i.id,i.value)}catch(e){}}});
+rq();go(location.hash.slice(1)||'inicio');
+</script>
+</body>
+</html>
