@@ -183,7 +183,7 @@ h2{text-transform:none;font-size:clamp(28px,6vw,44px);font-weight:700;letter-spa
 <p class="s">Escribe lo que te contaron tus padres o abuelos.</p>
 <input type="text" id="nm" placeholder="Tu nombre (opcional)"><textarea id="tx" rows="3" placeholder="Su historia..."></textarea>
 <button class="btn" id="pb">Publicar</button><div id="wall"></div>
-<p class="note">El muro guarda en tu navegador. Para un muro compartido hace falta una base de datos.</p>
+<p class="note">Las historias publicadas se guardan en vivo en nuestra base de datos en Supabase.</p>
 <h2>Quiz de supervivencia</h2>
 <div class="card" id="qz"></div>
 </section>
@@ -202,9 +202,16 @@ h2{text-transform:none;font-size:clamp(28px,6vw,44px);font-weight:700;letter-spa
 </section>
 
 <footer class="ft">Managua 1972</footer>
-<script>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+const supabaseUrl = 'https://Gurlxpsvmpzlwtlqzcog.supabase.co'
+const supabaseKey = 'sb_publishable_bI12j3xOmH9wLP9BV6wnGA_td4YoSZ6'
+const supabase = createClient(supabaseUrl, supabaseKey)
+
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-function go(p){if(!$('#'+p))p='inicio';$$('.pg').forEach(e=>e.classList.toggle('on',e.id==p));$$('nav button').forEach(b=>b.classList.toggle('on',b.dataset.p==p));window.scrollTo(0,0);if(p=='historia')start()}
+function go(p){if(!$('#'+p))p='inicio';$$('.pg').forEach(e=>e.classList.toggle('on',e.id==p));$$('nav button').forEach(b=>b.classList.toggle('on',b.dataset.p==p));window.scrollTo(0,0);if(p=='historia')start();if(p=='comunidad')cargarHistorias()}
 $$('[data-p]').forEach(b=>b.onclick=()=>{go(b.dataset.p);try{location.hash=b.dataset.p}catch(e){}});
 addEventListener('hashchange',()=>go(location.hash.slice(1)));
 const H=[120,90,150,110,170,100,130,95,160,105,140,85];
@@ -240,9 +247,54 @@ e.ondragstart=ev=>ev.dataTransfer.setData('t',e.id);e.onclick=()=>(e.parentNode=
 [$('#pool'),$('#bag')].forEach(z=>{z.ondragover=e=>e.preventDefault();z.ondrop=e=>{e.preventDefault();const el=document.getElementById(e.dataTransfer.getData('t'));if(el)z.appendChild(el)}});
 $('#chk').onclick=()=>{let ok=0,bad=0;$$('.item').forEach(e=>e.classList.remove('ok','no'));$$('#bag .item').forEach(e=>{if(e.dataset.ok==1){ok++;e.classList.add('ok')}else{bad++;e.classList.add('no')}});
 const miss=$$('#pool .item').filter(e=>e.dataset.ok==1).length;$('#res').textContent=` Aciertos: ${ok} · Sobran: ${bad} · Faltan: ${miss}`};
-let W=[];try{W=JSON.parse(localStorage.getItem('w')||'[]')}catch(e){}
-function rw(){$('#wall').innerHTML='';W.forEach(w=>{const d=document.createElement('div');d.className='post';const b=document.createElement('b');b.textContent=w.n||'Anónimo';const p=document.createElement('div');p.textContent=w.t;d.append(b,p);$('#wall').prepend(d)})}
-$('#pb').onclick=()=>{const t=$('#tx').value.trim();if(!t)return;W.push({n:$('#nm').value.trim(),t});try{localStorage.setItem('w',JSON.stringify(W))}catch(e){}$('#tx').value='';rw()};rw();
+
+// FUNCIONES DE SUPABASE PARA EL MURO DE HISTORIAS
+async function cargarHistorias(){
+  $('#wall').innerHTML = '<p class="s">Cargando historias...</p>';
+  const { data, error } = await supabase.from('historias').select('*').order('id', { ascending: false });
+  if(error){
+    console.error('Error al cargar:', error);
+    $('#wall').innerHTML = '<p class="s">Error al cargar las historias.</p>';
+    return;
+  }
+  $('#wall').innerHTML = '';
+  if(!data || data.length === 0){
+    $('#wall').innerHTML = '<p class="s">Aún no hay historias publicadas. ¡Sé el primero en compartir la tuya!</p>';
+    return;
+  }
+  data.forEach(w => {
+    const d = document.createElement('div');
+    d.className = 'post';
+    const b = document.createElement('b');
+    b.textContent = w.nombre || 'Anónimo';
+    const p = document.createElement('div');
+    p.textContent = w.historia;
+    d.append(b, p);
+    $('#wall').appendChild(d);
+  });
+}
+
+$('#pb').onclick = async () => {
+  const t = $('#tx').value.trim();
+  const n = $('#nm').value.trim();
+  if(!t) return;
+  $('#pb').disabled = true;
+  $('#pb').textContent = 'Publicando...';
+  
+  const { error } = await supabase.from('historias').insert([{ nombre: n || 'Anónimo', historia: t }]);
+  $('#pb').disabled = false;
+  $('#pb').textContent = 'Publicar';
+  
+  if(error){
+    console.error('Error al insertar:', error);
+    alert('Ocurrió un error al guardar tu historia. Revisa los permisos (RLS) en Supabase.');
+  } else {
+    $('#tx').value = '';
+    $('#nm').value = '';
+    cargarHistorias();
+  }
+};
+
 const Q=[['¿Qué haces primero durante un temblor dentro de casa?',['Correr al ascensor','Agacharte, cubrirte y sujetarte','Pararte junto a la ventana'],1],['¿Qué NO va en la mochila de emergencia?',['Linterna','Agua','Un televisor'],2],['Cuando termina el temblor, ¿qué haces?',['Salir con calma por la ruta de evacuación','Usar el ascensor','Quedarte bajo cables'],0],['En redes durante un desastre, lo mejor es…',['Compartir todo rápido','Compartir solo fuentes oficiales','Inventar cifras'],1],['¿Qué magnitud tuvo el sismo de 1972 según esta página?',['4.5','6.2','8.0'],1],['¿Qué es una réplica?',['Un sismo anterior','Un sismo más pequeño posterior al principal','Una ola gigante'],1],['¿Qué significa damnificado?',['Rescatista','Persona que viaja','Persona que perdió su hogar o bienes por un desastre'],2],['Si estás en la calle durante un temblor, ¿qué haces?',['Ir a un espacio abierto lejos de cables y fachadas','Entrar a un edificio alto','Pararte bajo un poste'],0],['Un punto de encuentro familiar sirve para…',['Guardar comida','Reunirse tras la emergencia','Evitar evacuar'],1],['¿Qué es una falla?',['Un río subterráneo','Un tipo de edificio','Una fractura de la corteza donde puede ocurrir un sismo'],2]];
 let qi=0,sc=0;
 function rq(){const z=$('#qz');if(qi>=Q.length){z.innerHTML=`<b>Resultado: ${sc}/${Q.length}</b><br>${sc>=9?'Excelente: ya sabes cómo protegerte.':sc>=6?'Bien, repasa la sección de Prevención.':'Repasa Historia y Prevención y vuelve a intentarlo.'}<br><button class="btn" style="margin-top:10px" id="rs">Repetir</button>`;$('#rs').onclick=()=>{qi=0;sc=0;rq()};return}
