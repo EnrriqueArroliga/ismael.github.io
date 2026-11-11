@@ -303,8 +303,8 @@ e.ondragstart=ev=>ev.dataTransfer.setData('t',e.id);e.onclick=()=>(e.parentNode=
 $('#chk').onclick=()=>{let ok=0,bad=0;$$('.item').forEach(e=>e.classList.remove('ok','no'));$$('#bag .item').forEach(e=>{if(e.dataset.ok==1){ok++;e.classList.add('ok')}else{bad++;e.classList.add('no')}});
 const miss=$$('#pool .item').filter(e=>e.dataset.ok==1).length;$('#res').textContent=` Aciertos: ${ok} · Sobran: ${bad} · Faltan: ${miss}`};
 // Muro compartido en Supabase (REST API)
-const SB_URL='https://gurlxpsvmpzlwtlqzcog.supabase.co';
-const SB_KEY='sb_publishable_bI12j3xOmH9wLP9BV6wnGA_td4YoSZ6';
+const SB_URL='https://ffdmnsjiqbgtmuhonmuh.supabase.co';
+const SB_KEY='sb_publishable_Een9neIlV0jIGMxT2_oKrA_twsL8T6R';
 const SB_TABLE='historias';
 const wall=$('#wall'), wallStatus=$('#wallStatus'), publishBtn=$('#pb');
 function wallMessage(msg){wallStatus.textContent=msg;}
