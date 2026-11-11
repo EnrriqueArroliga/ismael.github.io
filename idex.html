@@ -211,7 +211,7 @@ h2{text-transform:none;font-size:clamp(28px,6vw,44px);font-weight:700;letter-spa
 <script>
 
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-function go(p){if(!$('#'+p))p='inicio';$$('.pg').forEach(e=>e.classList.toggle('on',e.id==p));$$('nav button').forEach(b=>b.classList.toggle('on',b.dataset.p==p));window.scrollTo(0,0);if(p=='historia'&&typeof start==='function')start();if(p=='mapa'&&window.leafletMap)setTimeout(()=>window.leafletMap.invalidateSize(),120)}
+function go(p){if(!$('#'+p))p='inicio';$$('.pg').forEach(e=>e.classList.toggle('on',e.id==p));$$('nav button').forEach(b=>b.classList.toggle('on',b.dataset.p==p));window.scrollTo(0,0);if(p=='historia'&&typeof start==='function')start();if(p=='mapa'&&window.leafletMap){setTimeout(()=>window.leafletMap.invalidateSize(true),350);setTimeout(()=>window.leafletMap.invalidateSize(true),900)}}
 // Navegación principal inicializada antes de los módulos opcionales.
 $$('[data-p]').forEach(b=>b.onclick=()=>{go(b.dataset.p);try{location.hash=b.dataset.p}catch(e){}});
 addEventListener('hashchange',()=>go(location.hash.slice(1)));
@@ -250,25 +250,32 @@ const P=[
 $('#bld').innerHTML=P.map(p=>`<div class="card"><div class="building-photos" style="margin-bottom:10px">${p[4].length?p[4].map((src,i)=>`<img src="${src}" alt="${p[2]} — fotografía ${i+1}" loading="lazy">`).join(''):'<div class="vid" style="aspect-ratio:4/3;max-height:none">Fotografía no disponible</div>'}</div><b>${p[2]}</b><p class="s" style="font-size:14px;margin:6px 0 0">${p[3]}</p></div>`).join('');
 // Coordenadas de referencia aproximadas del centro histórico; verificar con fuentes cartográficas antes de tratarlas como ubicaciones exactas.
 if(window.L){
+try {
+// Una coordenada por cada elemento de P, en el mismo orden.
+// Son puntos de referencia aproximados, no levantamientos catastrales.
 const GEO=[
-[12.1477,-86.2738], // Casa Presidencial / entorno de Tiscapa
+[12.1477,-86.2738], // Casa Presidencial
+[12.1541,-86.2732], // Antigua Catedral
+[12.1487,-86.2742], // Banco Central
 [12.1481,-86.2730], // Banco de América
 [12.1466,-86.2720], // Teatro Rubén Darío
 [12.1429,-86.2708], // Hospital Militar
 [12.1510,-86.2698], // Cárcel El Hormiguero
 [12.1490,-86.2745], // Hotel Reisel
-[12.1484,-86.2718]  // Palacio Nacional
+[12.1540,-86.2727]  // Palacio Nacional
 ];
 const sat=window.L.map('map',{scrollWheelZoom:true}).setView([12.148,-86.273],15);
 window.leafletMap=sat;
-L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,attribution:'Tiles © Esri'}).addTo(sat);
+const satTiles=L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',{maxZoom:19,keepBuffer:4,updateWhenIdle:true,attribution:'Tiles © Esri'}).addTo(sat);
+satTiles.on('tileerror',()=>console.warn('No se pudo cargar una imagen satelital; revisa la conexión a internet.'));
+window.addEventListener('resize',()=>setTimeout(()=>sat.invalidateSize(true),150));
 const markers=[];
-P.forEach((p,i)=>{const marker=L.marker(GEO[i]).addTo(sat).bindTooltip(p[2],{direction:'top'});marker.on('click',()=>{markers.forEach(m=>m.setOpacity(0.65));marker.setOpacity(1);const fotos=p[4].length?'<div class="building-photos" style="margin-top:10px">'+p[4].map((src,j)=>'<img src="'+src+'" alt="'+p[2]+' — fotografía '+(j+1)+'" loading="lazy">').join('')+'</div>':'<p class="s">Fotografía no disponible.</p>';$('#info').innerHTML='<b>'+p[2]+'</b><br>'+p[3]+fotos;});markers.push(marker)});
+P.forEach((p,i)=>{if(!GEO[i])return;const marker=L.marker(GEO[i]).addTo(sat).bindTooltip(p[2],{direction:'top'});marker.on('click',()=>{markers.forEach(m=>m.setOpacity(0.65));marker.setOpacity(1);const fotos=p[4].length?'<div class="building-photos" style="margin-top:10px">'+p[4].map((src,j)=>'<img src="'+src+'" alt="'+p[2]+' — fotografía '+(j+1)+'" loading="lazy">').join('')+'</div>':'<p class="s">Fotografía no disponible.</p>';$('#info').innerHTML='<b>'+p[2]+'</b><br>'+p[3]+fotos;});markers.push(marker)});
 
+} catch(mapError) { console.error('No se pudo inicializar el mapa:', mapError); $('#info').textContent='El mapa no está disponible en este momento. Las demás secciones siguen funcionando.'; }
 }else{console.warn('Leaflet no cargó; la navegación sigue disponible, pero el mapa requiere conexión.');}
 
-$('#aud').innerHTML=[1,2,3].map(n=>`<div class="card row" style="margin-bottom:8px"><button class="play" data-n="${n}">▶</button><div><b>Testimonio ${n}</b><br><span class="lbl" id="a${n}">Sin audio aún</span></div></div>`).join('');
-$$('.play').forEach(b=>b.onclick=()=>{$('#a'+b.dataset.n).textContent='Agrega aquí tu archivo de audio'});
+$('#aud').innerHTML=[1,2,3].map(n=>`<div class="card row" style="margin-bottom:8px"><span class="play" aria-hidden="true">♪</span><div><b>Testimonio ${n}</b><br><span class="lbl">Archivo de audio pendiente</span></div></div>`).join('');
 const PR=[['La Prensa: comparación con Hiroshima','Comparó la destrucción con Hiroshima y Nagasaki. Titulares: «En 30 segundos solo Hiroshima y Managua» y «Un ensayo del Juicio Final». Recorte: pendiente.'],['La Prensa: advertencia previa','El 22 de diciembre, el ingeniero Carlos Santos Berroterán advirtió al director del diario que la sequía podía provocar un sismo fuerte. Documento: pendiente.'],['Radio internacional','Audio de archivo pendiente.']];
 $('#prs').innerHTML=PR.map((p,i)=>`<div class="card" style="margin-bottom:8px;cursor:pointer" data-i="${i}"><b>${p[0]}</b><div class="s" style="display:none">${p[1]}</div></div>`).join('');
 $$('#prs .card').forEach(c=>c.onclick=()=>{const d=c.querySelector('div');d.style.display=d.style.display=='none'?'block':'none'});
