@@ -40,8 +40,11 @@ p.s{color:var(--sage);margin-bottom:14px}
 .big{font-size:44px;font-weight:600;color:var(--ocre);line-height:1}
 .lbl{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--sage);margin-top:6px}
 .ba{position:relative;aspect-ratio:3/2;border:1px solid var(--line);overflow:hidden;--x:50%;background:#171513}
+.ba #b1,.ba .af{position:absolute;inset:0;width:100%;height:100%}
+.ba #b1{z-index:1}
+.ba .af{z-index:2;clip-path:inset(0 0 0 var(--x))}
 .ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;user-select:none}
-.ba .af{clip-path:inset(0 0 0 var(--x))}
+.ba #b1 img,.ba .af img{width:100%;height:100%;object-fit:cover}
 .ba .hd{position:absolute;top:0;bottom:0;left:var(--x);width:2px;background:var(--fg)}
 .ba input{width:100%;margin-top:10px;accent-color:var(--ac)}
 .tag{position:absolute;top:8px;font-size:12px;text-transform:uppercase;background:var(--deep);padding:3px 7px}
@@ -142,7 +145,7 @@ h2{text-transform:none;font-size:clamp(28px,6vw,44px);font-weight:700;letter-spa
 <h2>¿Por qué fue tan destructivo?</h2>
 <div class="card"><p class="s">Aunque la magnitud fue moderada (6.2), se activaron varias fallas bajo el centro: Tiscapa, Los Bancos, Chico Pelón, Las Escuelas y la del Aeropuerto.</p><p class="s">Muchas casas de taquezal ya habían sido dañadas por el terremoto de 1931 y no se repararon bien. Se cayeron aun cuando el sismo no fue enorme.</p><p class="s">Managua está en una zona volcánica activa, donde la placa de Cocos se hunde bajo la placa del Caribe.</p></div>
 <h2>Antes y después</h2>
-<p class="s">Desliza para comparar. <!-- NOTA PARA EDICIÓN: La comparación antes/después es esquemática; reemplazarla por fotografías reales de archivo cuando estén disponibles. --></p>
+<p class="s">Desliza para comparar. <!-- NOTA PARA EDICIÓN: Comparación con fotografías proporcionadas: Managua antes y Managua actual. --></p>
 <div class="ba" id="ba"><div id="b1"><img src="managua-antes.jpg" alt="Managua antes del terremoto de 1972, fotografía histórica en blanco y negro"></div><div class="af" id="b2"><img src="managua-despues.webp" alt="Managua actual, vista urbana a color"></div><span class="tag" style="left:8px;z-index:4">Antes</span><span class="tag" style="right:8px;z-index:4">Después</span><div class="hd"></div></div>
 <input type="range" min="0" max="100" value="50" id="rg" style="width:100%;accent-color:var(--ac);margin-top:10px" aria-label="Desliza para comparar Managua antes y después">
 <h2>Cronología</h2>
