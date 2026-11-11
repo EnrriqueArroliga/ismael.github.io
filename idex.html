@@ -22,10 +22,13 @@ nav button{background:none;border:1px solid transparent;color:var(--fg);font:500
 nav button.on{border-color:var(--fg)}
 .btn{display:inline-block;background:var(--ac);color:var(--ink);border:0;padding:12px 16px;font:600 15px var(--font);letter-spacing:.04em;text-transform:uppercase;cursor:pointer}
 .btn:hover{opacity:.85}
-.pg{display:none;padding:40px 5% 70px;max-width:980px;margin:0 auto}
-.pg.on{display:block;animation:in .4s ease}
-.pg.hero:not(.on){display:none}
-.pg.hero.on{display:flex}
+.pg{display:block;padding:40px 5% 70px;max-width:980px;margin:0 auto;scroll-margin-top:120px}
+.pg:not(.active){display:none!important}
+.pg.active{display:block}
+.pg.hero.active{display:flex}
+footer.ft{display:none}
+body.show-footer footer.ft{display:block}
+.pg.hero{display:flex}
 @keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 h1{font-size:clamp(34px,8vw,64px);font-weight:500;line-height:1.05;text-transform:uppercase;letter-spacing:.03em}
 h2{font-size:26px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;margin:44px 0 14px}
@@ -226,13 +229,12 @@ Tu navegador no puede reproducir este video.
 <script>
 
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-function go(p){if(!$('#'+p))p='inicio';$$('.pg').forEach(e=>e.classList.toggle('on',e.id==p));$$('nav button').forEach(b=>b.classList.toggle('on',b.dataset.p==p));window.scrollTo(0,0);if(p=='historia'&&typeof start==='function')start();if(p=='mapa'&&window.leafletMap){setTimeout(()=>window.leafletMap.invalidateSize(true),350);setTimeout(()=>window.leafletMap.invalidateSize(true),900)}}
+function go(p){if(!$('#'+p)||!$('#'+p).classList.contains('pg'))p='inicio';$$('.pg').forEach(s=>s.classList.toggle('active',s.id===p));document.body.classList.toggle('show-footer',p==='recursos');$$('nav button').forEach(b=>b.classList.toggle('on',b.dataset.p==p));const target=$('#'+p);if(target)window.scrollTo({top:0,behavior:'smooth'});if(p=='historia'&&typeof start==='function')start();if(p=='mapa'&&window.leafletMap){setTimeout(()=>window.leafletMap.invalidateSize(true),350);setTimeout(()=>window.leafletMap.invalidateSize(true),900)}}
 // Navegación principal inicializada antes de los módulos opcionales.
 $$('[data-p]').forEach(b=>b.onclick=()=>{go(b.dataset.p);try{location.hash=b.dataset.p}catch(e){}});
 addEventListener('hashchange',()=>go(location.hash.slice(1)));
 const O=['inicio','historia','mapa','medios','prevencion','comunidad','recursos'],NM=['Inicio','Historia','Mapa','Medios','Prevención','Comunidad','Recursos'];
 O.slice(1,-1).forEach((p,i)=>{const b=document.createElement('button');b.className='btn';b.style.marginTop='36px';b.textContent='Siguiente: '+NM[i+2]+' →';b.onclick=()=>{go(O[i+2]);try{location.hash=O[i+2]}catch(e){}};$('#'+p).appendChild(b)});
-go(location.hash.slice(1)||'inicio');
 
 const H=[120,90,150,110,170,100,130,95,160,105,140,85];
 function city(r){let s='<svg viewBox="0 0 600 260" preserveAspectRatio="none"><rect width="600" height="260" fill="'+(r?'#5a524b':'#d9b382')+'"/>';
@@ -313,7 +315,10 @@ addEventListener('scroll',()=>{const h=document.documentElement;$('#pr').style.w
 $$('.pl').forEach(i=>{try{i.value=localStorage.getItem('p'+i.id)||''}catch(e){}i.oninput=()=>{try{localStorage.setItem('p'+i.id,i.value)}catch(e){}}});
 const rio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v');rio.unobserve(e.target)}}),{threshold:.15});
 $$('.pg:not(.hero) .card,.pg h2,.pg details').forEach((e,i)=>{e.classList.add('rv');e.style.transitionDelay=(i%4)*70+'ms';rio.observe(e)});
-rq();go(location.hash.slice(1)||'inicio');
+rq();
+const sectionObserver=new IntersectionObserver(entries=>{const visible=entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];if(visible){$$('nav button').forEach(b=>b.classList.toggle('on',b.dataset.p===visible.target.id));}}, {rootMargin:'-20% 0px -65% 0px',threshold:[0,.1,.25,.5]});
+$$('.pg').forEach(section=>sectionObserver.observe(section));
+requestAnimationFrame(()=>go(location.hash.slice(1)||'inicio'));
 
 </script>
 </body>
