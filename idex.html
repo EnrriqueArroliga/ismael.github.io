@@ -323,20 +323,20 @@ function renderStories(rows){
 async function loadStories(){
   wallMessage('Cargando historias compartidas...');
   try{
-    const r=await fetch(`${SB_URL}/rest/v1/${SB_TABLE}?select=id,nombre,historia,created_at&order=created_at.desc`,{headers:{apikey:SB_KEY,Authorization:`Bearer ${SB_KEY}`}});
+    const r=await fetch(`${SB_URL}/rest/v1/${SB_TABLE}?select=id,nombre,historia,created_at&order=created_at.desc`,{headers:{apikey:SB_KEY}});
     if(!r.ok){const detail=await r.text();throw new Error(`Supabase (${r.status}): ${detail}`);}
     renderStories(await r.json());wallMessage('Historias compartidas cargadas desde Supabase.');
-  }catch(e){console.error('Error al cargar el muro:',e);wallMessage('No se pudieron cargar las historias. Verifica la tabla y las políticas de Supabase.');}
+  }catch(e){console.error('Error al cargar el muro:',e);wallMessage('Error al cargar: '+(e.message||'revisa la tabla y las políticas de Supabase.'));}
 }
 publishBtn.onclick=async()=>{
   const t=$('#tx').value.trim();if(!t){wallMessage('Escribe una historia antes de publicar.');return;}
   if(t.length>3000){wallMessage('La historia no puede superar los 3000 caracteres.');return;}
   publishBtn.disabled=true;wallMessage('Publicando historia...');
   try{
-    const r=await fetch(`${SB_URL}/rest/v1/${SB_TABLE}`,{method:'POST',headers:{apikey:SB_KEY,Authorization:`Bearer ${SB_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({nombre:$('#nm').value.trim().slice(0,80)||'Anónimo',historia:t})});
+    const r=await fetch(`${SB_URL}/rest/v1/${SB_TABLE}`,{method:'POST',headers:{apikey:SB_KEY,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({nombre:$('#nm').value.trim().slice(0,80)||'Anónimo',historia:t})});
     if(!r.ok){const detail=await r.text();throw new Error(`Supabase (${r.status}): ${detail}`);}
     $('#tx').value='';wallMessage('¡Tu historia se publicó para todos!');await loadStories();
-  }catch(e){console.error('Error al publicar:',e);wallMessage('No se pudo publicar. Comprueba que creaste la tabla y configuraste las políticas RLS.');}
+  }catch(e){console.error('Error al publicar:',e);wallMessage('Error al publicar: '+(e.message||'revisa la tabla y las políticas RLS.'));}
   finally{publishBtn.disabled=false;}
 };
 loadStories();
