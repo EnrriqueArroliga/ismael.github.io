@@ -205,8 +205,7 @@ Tu navegador no puede reproducir este video.
 <h2>Muro de historias</h2>
 <p class="s">Escribe lo que te contaron tus padres o abuelos.</p>
 <input type="text" id="nm" placeholder="Tu nombre (opcional)"><textarea id="tx" rows="3" placeholder="Su historia..."></textarea>
-<button class="btn" id="pb">Publicar</button><div id="wall"></div>
-<!-- NOTA PARA EDICIÓN: El muro actualmente guarda las historias en el almacenamiento local del navegador (localStorage). No está conectado a Supabase ni a una base de datos compartida. -->
+<button class="btn" id="pb">Publicar</button><p class="s" id="wallStatus" role="status" aria-live="polite">Conectando con el muro...</p><div id="wall"></div>
 <h2>Quiz de supervivencia</h2>
 <div class="card" id="qz"></div>
 </section>
@@ -303,9 +302,44 @@ e.ondragstart=ev=>ev.dataTransfer.setData('t',e.id);e.onclick=()=>(e.parentNode=
 [$('#pool'),$('#bag')].forEach(z=>{z.ondragover=e=>e.preventDefault();z.ondrop=e=>{e.preventDefault();const el=document.getElementById(e.dataTransfer.getData('t'));if(el)z.appendChild(el)}});
 $('#chk').onclick=()=>{let ok=0,bad=0;$$('.item').forEach(e=>e.classList.remove('ok','no'));$$('#bag .item').forEach(e=>{if(e.dataset.ok==1){ok++;e.classList.add('ok')}else{bad++;e.classList.add('no')}});
 const miss=$$('#pool .item').filter(e=>e.dataset.ok==1).length;$('#res').textContent=` Aciertos: ${ok} · Sobran: ${bad} · Faltan: ${miss}`};
-let W=[];try{W=JSON.parse(localStorage.getItem('w')||'[]')}catch(e){}
-function rw(){$('#wall').innerHTML='';W.forEach(w=>{const d=document.createElement('div');d.className='post';const b=document.createElement('b');b.textContent=w.n||'Anónimo';const p=document.createElement('div');p.textContent=w.t;d.append(b,p);$('#wall').prepend(d)})}
-$('#pb').onclick=()=>{const t=$('#tx').value.trim();if(!t)return;W.push({n:$('#nm').value.trim(),t});try{localStorage.setItem('w',JSON.stringify(W))}catch(e){}$('#tx').value='';rw()};rw();
+// Muro compartido en Supabase (REST API)
+const SB_URL='https://gurlxpsvmpzlwtlqzcog.supabase.co';
+const SB_KEY='sb_publishable_bI12j3xOmH9wLP9BV6wnGA_td4YoSZ6';
+const SB_TABLE='historias';
+const wall=$('#wall'), wallStatus=$('#wallStatus'), publishBtn=$('#pb');
+function wallMessage(msg){wallStatus.textContent=msg;}
+function renderStories(rows){
+  wall.innerHTML='';
+  if(!rows || !rows.length){wall.textContent='Todavía no hay historias. ¡Sé la primera persona en compartir una!';return;}
+  rows.forEach(w=>{
+    const d=document.createElement('div');d.className='post';
+    const b=document.createElement('b');b.textContent=w.nombre||'Anónimo';
+    const p=document.createElement('div');p.textContent=w.historia||'';
+    const date=document.createElement('small');date.className='s';
+    if(w.created_at){const dt=new Date(w.created_at);if(!Number.isNaN(dt.getTime()))date.textContent=dt.toLocaleString('es-NI');}
+    d.append(b,p);if(date.textContent)d.append(date);wall.append(d);
+  });
+}
+async function loadStories(){
+  wallMessage('Cargando historias compartidas...');
+  try{
+    const r=await fetch(`${SB_URL}/rest/v1/${SB_TABLE}?select=id,nombre,historia,created_at&order=created_at.desc`,{headers:{apikey:SB_KEY,Authorization:`Bearer ${SB_KEY}`}});
+    if(!r.ok){const detail=await r.text();throw new Error(`Supabase (${r.status}): ${detail}`);}
+    renderStories(await r.json());wallMessage('Historias compartidas cargadas desde Supabase.');
+  }catch(e){console.error('Error al cargar el muro:',e);wallMessage('No se pudieron cargar las historias. Verifica la tabla y las políticas de Supabase.');}
+}
+publishBtn.onclick=async()=>{
+  const t=$('#tx').value.trim();if(!t){wallMessage('Escribe una historia antes de publicar.');return;}
+  if(t.length>3000){wallMessage('La historia no puede superar los 3000 caracteres.');return;}
+  publishBtn.disabled=true;wallMessage('Publicando historia...');
+  try{
+    const r=await fetch(`${SB_URL}/rest/v1/${SB_TABLE}`,{method:'POST',headers:{apikey:SB_KEY,Authorization:`Bearer ${SB_KEY}`,'Content-Type':'application/json',Prefer:'return=minimal'},body:JSON.stringify({nombre:$('#nm').value.trim().slice(0,80)||'Anónimo',historia:t})});
+    if(!r.ok){const detail=await r.text();throw new Error(`Supabase (${r.status}): ${detail}`);}
+    $('#tx').value='';wallMessage('¡Tu historia se publicó para todos!');await loadStories();
+  }catch(e){console.error('Error al publicar:',e);wallMessage('No se pudo publicar. Comprueba que creaste la tabla y configuraste las políticas RLS.');}
+  finally{publishBtn.disabled=false;}
+};
+loadStories();
 const Q=[['¿Qué haces primero durante un temblor dentro de casa?',['Correr al ascensor','Agacharte, cubrirte y sujetarte','Pararte junto a la ventana'],1],['¿Qué NO va en la mochila de emergencia?',['Linterna','Agua','Un televisor'],2],['Cuando termina el temblor, ¿qué haces?',['Salir con calma por la ruta de evacuación','Usar el ascensor','Quedarte bajo cables'],0],['En redes durante un desastre, lo mejor es…',['Compartir todo rápido','Compartir solo fuentes oficiales','Inventar cifras'],1],['¿Qué magnitud tuvo el sismo de 1972 según esta página?',['4.5','6.2','8.0'],1],['¿Qué es una réplica?',['Un sismo anterior','Un sismo más pequeño posterior al principal','Una ola gigante'],1],['¿Qué significa damnificado?',['Rescatista','Persona que viaja','Persona que perdió su hogar o bienes por un desastre'],2],['Si estás en la calle durante un temblor, ¿qué haces?',['Ir a un espacio abierto lejos de cables y fachadas','Entrar a un edificio alto','Pararte bajo un poste'],0],['Un punto de encuentro familiar sirve para…',['Guardar comida','Reunirse tras la emergencia','Evitar evacuar'],1],['¿Qué es una falla?',['Un río subterráneo','Un tipo de edificio','Una fractura de la corteza donde puede ocurrir un sismo'],2]];
 let qi=0,sc=0;
 function rq(){const z=$('#qz');if(qi>=Q.length){z.innerHTML=`<b>Resultado: ${sc}/${Q.length}</b><br>${sc>=9?'Excelente: ya sabes cómo protegerte.':sc>=6?'Bien, repasa la sección de Prevención.':'Repasa Historia y Prevención y vuelve a intentarlo.'}<br><button class="btn" style="margin-top:10px" id="rs">Repetir</button>`;$('#rs').onclick=()=>{qi=0;sc=0;rq()};return}
