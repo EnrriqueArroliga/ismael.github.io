@@ -39,8 +39,8 @@ p.s{color:var(--sage);margin-bottom:14px}
 .card{background:var(--deep);border:1px solid var(--line);padding:16px}
 .big{font-size:44px;font-weight:600;color:var(--ocre);line-height:1}
 .lbl{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--sage);margin-top:6px}
-.ba{position:relative;aspect-ratio:600/260;border:1px solid var(--line);overflow:hidden;--x:50%}
-.ba svg{position:absolute;inset:0;width:100%;height:100%}
+.ba{position:relative;aspect-ratio:3/2;border:1px solid var(--line);overflow:hidden;--x:50%;background:#171513}
+.ba img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;user-select:none}
 .ba .af{clip-path:inset(0 0 0 var(--x))}
 .ba .hd{position:absolute;top:0;bottom:0;left:var(--x);width:2px;background:var(--fg)}
 .ba input{width:100%;margin-top:10px;accent-color:var(--ac)}
@@ -143,8 +143,8 @@ h2{text-transform:none;font-size:clamp(28px,6vw,44px);font-weight:700;letter-spa
 <div class="card"><p class="s">Aunque la magnitud fue moderada (6.2), se activaron varias fallas bajo el centro: Tiscapa, Los Bancos, Chico Pelón, Las Escuelas y la del Aeropuerto.</p><p class="s">Muchas casas de taquezal ya habían sido dañadas por el terremoto de 1931 y no se repararon bien. Se cayeron aun cuando el sismo no fue enorme.</p><p class="s">Managua está en una zona volcánica activa, donde la placa de Cocos se hunde bajo la placa del Caribe.</p></div>
 <h2>Antes y después</h2>
 <p class="s">Desliza para comparar. <!-- NOTA PARA EDICIÓN: La comparación antes/después es esquemática; reemplazarla por fotografías reales de archivo cuando estén disponibles. --></p>
-<div class="ba" id="ba"><div id="b1"></div><div class="af" id="b2"></div><span class="tag" style="left:8px">Antes</span><span class="tag" style="right:8px">Después</span><div class="hd"></div></div>
-<input type="range" min="0" max="100" value="50" id="rg" style="width:100%;accent-color:var(--ac);margin-top:10px" aria-label="Comparar antes y después">
+<div class="ba" id="ba"><div id="b1"><img src="managua-antes.jpg" alt="Managua antes del terremoto de 1972, fotografía histórica en blanco y negro"></div><div class="af" id="b2"><img src="managua-despues.webp" alt="Managua actual, vista urbana a color"></div><span class="tag" style="left:8px;z-index:4">Antes</span><span class="tag" style="right:8px;z-index:4">Después</span><div class="hd"></div></div>
+<input type="range" min="0" max="100" value="50" id="rg" style="width:100%;accent-color:var(--ac);margin-top:10px" aria-label="Desliza para comparar Managua antes y después">
 <h2>Cronología</h2>
 <div class="tl" id="tl"></div>
 <h2>Edificios clave</h2><p class="s">Fotografías históricas de algunos edificios y lugares afectados por el terremoto.</p><div class="grid" id="bld"></div>
@@ -241,8 +241,8 @@ H.forEach((h,i)=>{const x=i*48+12,w=38,y=230;
 if(r){const k=[.3,.15,.35,.1][i%4];s+=`<polygon points="${x},${y} ${x},${y-h*k} ${x+10},${y-h*.12} ${x+20},${y-h*k*1.4} ${x+w},${y-h*.08} ${x+w},${y}" fill="#2e2824"/>`}
 else s+=`<rect x="${x}" y="${y-h}" width="${w}" height="${h}" fill="#8a7d70"/><rect x="${x+8}" y="${y-h+10}" width="6" height="8" fill="#ffd98a"/><rect x="${x+22}" y="${y-h+10}" width="6" height="8" fill="#ffd98a"/>`});
 return s+'<rect y="230" width="600" height="30" fill="'+(r?'#1c1a19':'#3a332d')+'"/></svg>'}
-$('#b1').innerHTML=city(0);$('#b2').innerHTML=city(1);
 $('#rg').oninput=e=>$('#ba').style.setProperty('--x',e.target.value+'%');
+$('#ba').style.setProperty('--x',$('#rg').value+'%');
 $('#dm').innerHTML=Array.from({length:100},(_,i)=>'<i data-i="'+i+'"></i>').join('');
 const TL=[['22 de diciembre de 1972','Víspera de Navidad. Hacía mucho calor y en la noche hubo tres temblores leves que casi nadie tomó en serio.'],['00:35 a. m., sábado 23','Un sismo de magnitud 6.2 sacude Managua durante 30 segundos. Su epicentro está en el lago Xolotlán, sobre la falla de Tiscapa.'],['01:18 y 01:20 a. m.','Dos réplicas de magnitud 5.0 y 5.2 terminan de derribar construcciones viejas.'],['Primeras horas','Se va la luz en casi todo el país, se revientan las tuberías y estallan incendios en la zona comercial.'],['Hasta el 6 de enero de 1973','Los incendios duran casi dos semanas. Los dos cuarteles de bomberos de Managua se derrumbaron y llegaron bomberos de otros departamentos.'],['1973','Se demuelen varios edificios dañados. El centro se declara propiedad del Estado y no se permite reconstruirlo por completo.'],['Hoy','Aún hay escombros y ruinas en el antiguo centro.']];
 $('#tl').innerHTML=TL.map(t=>`<div class="it"><b>${t[0]}</b><br>${t[1]}</div>`).join('');
